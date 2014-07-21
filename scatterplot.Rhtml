@@ -1,0 +1,67 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+   <meta charset="utf-8" /> 
+   <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script> 
+ <style type="text/css">
+ </style>
+</head> 
+
+<h1 id="output"> 
+</h1> 
+<body>
+<script type="text/javascript"> 
+//Width and height
+            	
+
+			//Data
+			var dataset = [
+                                    [5,20],
+                                    [480,90],
+                                    [250,50],
+                                    [100,33],
+                                    [330,95],
+                                    [410,12],
+                                    [475,44],
+                                    [25,67],
+                                    [85,21],
+                                    [220,88]
+                  
+                                ];
+
+			//Create SVG element
+			var svg = d3.select("body") //在 body 中用 d3
+					.append("svg") //加入 svg 
+					.attr("width", 550) //輸入圖寬
+					.attr("height", 100); //輸入圖高
+
+			svg.selectAll("circle") //全部設定成圓形
+                     .data(dataset)      //輸入資料
+                     .enter()
+                     .append("circle")  //加入圓形
+                     .attr("cx",function(d){  //圓心x座標
+                        return d[0]; //dataset[0][0] d=dataset[0]
+                     })      
+                     .attr("cy",function(d){ //圓心y座標
+                        return d[1];                  
+                     })
+                     .attr("r",5); //半徑
+                    
+                  svg.selectAll("text") //全部設定成標籤
+                     .data(dataset)      //輸入資料
+                     .enter()
+                     .append("text")  //加入標籤  
+                     .text(function(d){
+                        return d[0]+","+d[1];
+                     })         
+                     .attr("x",function(d){ //標籤x軸
+                        return d[0];
+                     })
+                     .attr("y",function(d){ //標籤y軸
+                        return d[1];
+                     })
+
+
+</script> 
+</body>
+</html> 
