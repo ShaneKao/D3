@@ -1,0 +1,172 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+<style type="text/css">
+.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style> 
+   <meta charset="utf-8" /> 
+   <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script> 
+ <style type="text/css">
+ </style>
+</head> 
+
+<h1 id="output"> 
+</h1> 
+<body>
+<p>Click on this text to update the chart with new data values (once).</p>
+<script type="text/javascript"> 
+var w = 600;
+      		var h = 250;
+
+			var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+			var xScale = d3.scale.ordinal()
+							.domain(d3.range(dataset.length)) //d3.range=c(0,1,2,3,...)
+							.rangeRoundBands([0, w], 0.05); //0開始w結束間距0.05
+
+			var yScale = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([0, h]);
+
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			//Create bars
+			svg.selectAll("rect")
+			   .data(dataset)
+			   .enter()
+			   .append("rect")
+			   .attr("x", function(d, i) {
+			   		return xScale(i);
+			   })
+			   .attr("y", function(d) {
+			   		return h - yScale(d);
+			   })
+			   .attr("width", xScale.rangeBand())
+			   .attr("height", function(d) {
+			   		return yScale(d);
+			   })
+			   .attr("fill", function(d) {
+					return "rgb(0, 0, " + (d * 10) + ")";
+			   });
+
+			//Create labels
+			svg.selectAll("text")
+			   .data(dataset)
+			   .enter()
+			   .append("text")
+			   .text(function(d) {
+			   		return d;
+			   })
+			   .attr("text-anchor", "middle")
+			   .attr("x", function(d, i) {
+			   		return xScale(i) + xScale.rangeBand() / 2;
+			   })
+			   .attr("y", function(d) {
+			   		return h - yScale(d) + 14;
+			   })
+			   .attr("font-family", "sans-serif")
+			   .attr("font-size", "11px")
+			   .attr("fill", "white");
+                     
+                     d3.select("p")
+      			.on("click", function() {
+
+					//New values for dataset
+					dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+								5, 10, 13, 19, 21, 25, 22, 18, 15, 13 ];
+
+					//Update all rects
+					svg.selectAll("rect")
+					   .data(dataset)
+                                 .transition()       //
+					   .attr("y", function(d) {
+					   		return h - yScale(d);
+					   })
+					   .attr("height", function(d) {
+					   		return yScale(d);
+					   })
+					   .attr("fill", function(d) {
+							return "rgb(0, 0, " + (d * 10) + ")";
+					   });
+
+					//Update all labels
+					svg.selectAll("text")
+					   .data(dataset)
+					   .text(function(d) {
+					   		return d;
+					   })
+					   .attr("x", function(d, i) {
+					   		return xScale(i) + xScale.rangeBand() / 2;
+					   })
+					   .attr("y", function(d) {
+					   		return h - yScale(d) + 14;
+					   });
+
+				});
+</script> 
+</body>
+</html> 
